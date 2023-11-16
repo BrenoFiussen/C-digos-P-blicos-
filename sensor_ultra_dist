@@ -1,0 +1,27 @@
+const int echoPin = 3;
+const int trigPin = 2;
+
+void setup() {
+  Serial.begin(9600);
+}
+void  loop(){
+    unsigned int echo_time;
+    float distance;
+    float distance1;
+    unsigned long time;
+  pinMode(trigPin, OUTPUT);
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  pinMode(echoPin, INPUT);
+  echo_time = pulseIn(echoPin, HIGH);
+  time = micros();
+  distance = (echo_time/2)*0.0346;
+  distance1 = sqrt(distance*distance - 1.3*1.3);
+  Serial.print(time/1000000.0, 4);
+  Serial.print("\t");
+  Serial.println(distance1, 2);
+  delay(20);
+}
