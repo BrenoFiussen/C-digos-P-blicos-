@@ -1,0 +1,34 @@
+#include <Wire.h>
+#include <VL53L0X.h>
+
+// Cria uma instancia do sensor
+VL53L0X sensor;
+
+void setup()
+{
+  // Inicializa a comunicação serial
+  Serial.begin(9600);
+  // Inicializa a comunicação I2C
+  Wire.begin();
+
+  // Inicializa o sensor
+  sensor.init();
+  // Define um timeout de 500mS para a leitura do sensor
+  // Em caso de erro, este será o tempo máximo de espera da resposta do sensor
+  sensor.setTimeout(500);
+  
+}
+
+void loop()
+{
+  // Faz a medição da distância e retorna um valor em milímetros
+  int dist = sensor.readRangeSingleMillimeters();
+  // define o tipo de variavel que time é
+  unsigned long time;
+  // coloca em time um contador em microsegundos
+  time = micros();
+  // Imprime no monitor serial
+  Serial.print(time/1000000.0, 4);
+  Serial.print(" ");
+  Serial.println(dist);
+}
