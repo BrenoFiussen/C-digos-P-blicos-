@@ -1,27 +1,51 @@
+// Define os pinos do sensor ultrassônico
 const int echoPin = 3;
 const int trigPin = 2;
 
 void setup() {
+  // Inicializa a comunicação serial com uma taxa de 9600 bps
   Serial.begin(9600);
 }
-void  loop(){
-    unsigned int echo_time;
-    float distance;
-    float distance1;
-    unsigned long time;
+
+void loop() {
+  // Variáveis para armazenar o tempo do pulso ultrassônico, a distância e o tempo atual
+  unsigned int echo_time;
+  float distance;
+  float distance1;
+  unsigned long time;
+
+  // Configura o pino de trigger como saída
   pinMode(trigPin, OUTPUT);
   digitalWrite(trigPin, LOW);
+
+  // Aguarda um curto período de tempo
   delayMicroseconds(10);
+
+  // Emite um pulso ultrassônico
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
+
+  // Configura o pino de echo como entrada
   pinMode(echoPin, INPUT);
+
+  // Mede o tempo que o pino de echo permanece em estado HIGH
   echo_time = pulseIn(echoPin, HIGH);
+
+  // Obtém o tempo atual em microssegundos
   time = micros();
-  distance = (echo_time/2)*0.0346;
-  distance1 = sqrt(distance*distance - 1.3*1.3);
-  Serial.print(time/1000000.0, 4);
+
+  // Calcula a distância em centímetros usando a velocidade do som
+  distance = (echo_time / 2) * 0.0346;
+
+  // Corrige a distância para levar em conta a posição do sensor
+  distance1 = sqrt(distance * distance - 1.3 * 1.3);
+
+  // Imprime o tempo e a distância corrigida no monitor serial
+  Serial.print(time / 1000000.0, 4);
   Serial.print("\t");
   Serial.println(distance1, 2);
+
+  // Aguarda um curto período de tempo antes da próxima leitura
   delay(20);
 }
